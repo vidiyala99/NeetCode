@@ -1,0 +1,112 @@
+Group Anagrams
+Solved 
+Given an array of strings strs, group all anagrams together into sublists. You may return the output in any order.
+
+An anagram is a string that contains the exact same characters as another string, but the order of the characters can be different.
+
+Example 1:
+
+Input: strs = ["act","pots","tops","cat","stop","hat"]
+
+Output: [["hat"],["act", "cat"],["stop", "pots", "tops"]]
+Example 2:
+
+Input: strs = ["x"]
+
+Output: [["x"]]
+Example 3:
+
+Input: strs = [""]
+
+Output: [[""]]
+Constraints:
+
+1 <= strs.length <= 1000.
+0 <= strs[i].length <= 100
+strs[i] is made up of lowercase English letters.
+Goal (Real Life Analogy):
+Imagine you’re sorting words into boxes. Each box should only contain words that are made from the same exact letters, just rearranged.
+
+For example:
+
+“act” and “cat” go into the same box
+
+“pots”, “stop”, and “tops” go into another box
+
+“hat” has no siblings, so it gets its own box
+
+These are called anagrams — words made by rearranging letters.
+
+🧠 How This Approach Works (Alphabet Soup Analogy):
+Imagine each word is like a bowl of alphabet soup.
+
+Now, you do this:
+
+✅ Step 1: Sort the letters
+You scoop out the letters from each bowl and arrange them in alphabetical order — this helps you clearly see what the word is made of, without caring about the order.
+
+So:
+
+"act" becomes "act"
+
+"cat" becomes "act"
+
+"pots" becomes "opst"
+
+"tops" becomes "opst"
+
+"hat" becomes "aht"
+
+Words that turn into the same sorted soup belong together!
+
+✅ Step 2: Use the soup as a label
+You then use this sorted version (e.g., "act" or "opst") as a label on a box.
+
+If you’ve seen that label before, drop the new word in that same box.
+
+If it’s a new label, create a new box for it.
+
+📦 Example:
+Input:
+["act", "pots", "tops", "cat", "stop", "hat"]
+
+After sorting:
+
+"act" → "act"
+
+"pots" → "opst"
+
+"tops" → "opst"
+
+"cat" → "act"
+
+"stop" → "opst"
+
+"hat" → "aht"
+
+Grouped:
+
+"act", "cat" → same box
+
+"pots", "tops", "stop" → same box
+
+"hat" → its own box
+
+Output:
+[["act", "cat"], ["pots", "tops", "stop"], ["hat"]]
+
+💡 Summary:
+You're just sorting each word’s letters to create a universal signature — then using that signature to organize words into correct anagram groups.
+class Solution:
+    def groupAnagrams(self, strs: List[str]) -> List[List[str]]:
+        d1={}
+        for i in strs:
+            s="".join(sorted(i))
+            if( s not in d1):
+                d1[s]=[i]
+            else:
+                d1[s].append(i)
+        l=[]
+        for i in d1:
+            l.append(d1[i])
+        return l

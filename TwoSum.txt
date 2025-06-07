@@ -1,0 +1,89 @@
+Two Sum
+Solved 
+Given an array of integers nums and an integer target, return the indices i and j such that nums[i] + nums[j] == target and i != j.
+
+You may assume that every input has exactly one pair of indices i and j that satisfy the condition.
+
+Return the answer with the smaller index first.
+
+Example 1:
+
+Input: 
+nums = [3,4,5,6], target = 7
+
+Output: [0,1]
+Explanation: nums[0] + nums[1] == 7, so we return [0, 1].
+
+Example 2:
+
+Input: nums = [4,5,6], target = 10
+
+Output: [0,2]
+Example 3:
+
+Input: nums = [5,5], target = 10
+
+Output: [0,1]
+Constraints:
+
+2 <= nums.length <= 1000
+-10,000,000 <= nums[i] <= 10,000,000
+-10,000,000 <= target <= 10,000,000
+Approach: Looking for Complements (Bucket Matching Analogy)
+Imagine you're trying to find two puzzle pieces that fit together to make a specific shape — that shape is your target number.
+
+Here’s what we do:
+
+First, we prepare:
+For every number in the list, we figure out what number would perfectly pair with it to reach the target.
+For example, if the target is 10 and you see a 4, you'd need a 6 to complete the pair (because 4 + 6 = 10).
+We note this needed number (called a "complement") and remember which position in the list it would help.
+
+Then we check:
+Now we go back and look at each number again.
+We ask:
+👉 “Hey, does this number complete the pair for any number we’ve seen earlier?”
+If yes, and it’s not pointing to itself (we want two different positions), then bingo!
+We’ve found our answer — return the two positions.
+
+🎯 Example:
+Let’s say nums = [4, 5, 6], and the target = 10.
+
+First, we write down what each number needs:
+
+4 → needs 6
+
+5 → needs 5
+
+6 → needs 4
+
+So we store:
+
+Need 6 at position 0
+
+Need 5 at position 1
+
+Need 4 at position 2
+
+Now, when we look again:
+
+When we’re at 4, we see that someone needs 4 (from earlier step).
+
+That someone is at index 2.
+
+So we pair index 0 and 2 → ✅ Done!
+
+💡 Why it works:
+We’re just making a list of “what we need” and checking if that “need” appears somewhere else.
+Like setting out empty jars labeled with what you want — and then seeing if someone fills it with the exact match.
+
+
+class Solution:
+    def twoSum(self, nums: List[int], target: int) -> List[int]:
+        d1,d2={},{}
+        for i in range(len(nums)):
+            d1[target-nums[i]]=i
+        for i in range(len(nums)):
+            k=target-nums[i]
+            if(nums[i] in d1 and d1[nums[i]]!=i):
+                return[i,d1[nums[i]]]

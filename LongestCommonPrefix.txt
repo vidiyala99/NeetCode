@@ -1,0 +1,104 @@
+Longest Common Prefix
+Solved 
+You are given an array of strings strs. Return the longest common prefix of all the strings.
+
+If there is no longest common prefix, return an empty string "".
+
+Example 1:
+
+Input: strs = ["bat","bag","bank","band"]
+
+Output: "ba"
+Example 2:
+
+Input: strs = ["dance","dag","danger","damage"]
+
+Output: "da"
+Example 3:
+
+Input: strs = ["neet","feet"]
+
+Output: ""
+Constraints:
+
+1 <= strs.length <= 200
+0 <= strs[i].length <= 200
+strs[i] is made up of lowercase English letters if it is non-empty.
+🧠 Approach: Build a Word Tower and Count Bricks
+Imagine each word in your list as a tower made of letter blocks. You want to find the tallest tower (prefix) that’s identical at the bottom of every single tower.
+
+Here’s how your method works:
+
+🪜 Step 1: Build prefixes and count how many towers share them
+Start with the first letter of each word, then the first two letters, and so on...
+
+Let’s say you have these words:
+
+["bat", "bag", "bank", "band"]
+
+You go through each word and build its starting chunks:
+
+"b"
+
+"ba"
+
+"bat" or "bag" or "bank" (depends on the word)
+
+And you keep a notebook where you tally how many words share each chunk:
+
+"b" → seen 4 times
+
+"ba" → seen 4 times
+
+"bat" → seen 1 time
+
+"bag" → seen 1 time
+...and so on
+
+So you're building a popularity scoreboard of all the starting pieces that show up across words.
+
+🪜 Step 2: Find the most shared and longest prefix
+Next, from your notebook, you ask:
+
+"Which starting chunks are seen the most?"
+
+"Which of these is the longest and appears in all words?"
+
+In our example, "ba" is shared by all 4 words — and is the longest such shared chunk.
+
+That becomes your answer.
+
+❌ What if no prefix matches?
+If not even the first letter matches across all words (like "neet" and "feet"), then there’s no common base. You return an empty string "".
+
+🧠 Why it works:
+You're collecting every possible beginning from each word, and then figuring out which one is the most common and the longest — and seen in all words.
+
+It’s like:
+
+"How far can we all walk together on the same path before someone takes a different turn?"
+
+class Solution:
+    def longestCommonPrefix(self, strs: List[str]) -> str:
+        d={}
+        m1,m2=0,0
+        for i in strs:
+            s=""
+            #m=max(m,len(i))
+            for j in i:
+                s+=j
+                if(s not in d):
+                    d[s]=1
+                else:
+                    d[s]+=1
+            s=""
+        for i in d:
+            m1=max(m1,d[i])
+        for i in d:
+            if(d[i]==m1):
+                m2=max(m2,len(i))
+        if(m1>1 or len(strs)==1):
+            for i in d:
+                if(d[i]==m1 and len(i)==m2 and d[i]==len(strs)):
+                    return i
+        return ""
